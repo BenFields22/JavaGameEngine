@@ -1,2 +1,2 @@
 # JavaGraphics
-java graphics programming
+java graphics programming practice
