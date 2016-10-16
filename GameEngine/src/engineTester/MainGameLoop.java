@@ -29,6 +29,7 @@ public class MainGameLoop {
 		//main loop
 		while(!Display.isCloseRequested()){
 			renderer.prepare();
+			//added comment
 			//game logic
 			//render
 			renderer.render(model);
