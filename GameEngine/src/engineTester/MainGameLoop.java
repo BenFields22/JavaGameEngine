@@ -1,5 +1,6 @@
 package engineTester;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -11,7 +12,8 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.Renderer;
 import shaders.StaticShader;
-import textures.ModelTexture; 
+import textures.ModelTexture;
+import toolbox.KeyboardInput; 
 
 public class MainGameLoop {
 
@@ -21,24 +23,6 @@ public class MainGameLoop {
 		Loader loader = new Loader();
 		StaticShader shader = new StaticShader();
 		Renderer renderer = new Renderer(shader);
-		/*float[] vertices = {
-				-0.5f, 0.5f, 0f,
-				-0.5f, -0.5f, 0f,
-				0.5f, -0.5f,0f,
-				0.5f,0.5f, 0f
-		};
-		
-		int[] indices = {
-				0,1,3,
-				3,1,2
-		};
-		
-		float[] textureCoords = {
-			0,0,
-			0,1,
-			1,1,
-			1,0
-		};*/
 		
 		float[] vertices = {			
 				-0.5f,0.5f,-0.5f,	
@@ -123,13 +107,13 @@ public class MainGameLoop {
 		ModelTexture texture = new ModelTexture(loader.loadTexture("wood"));
 		TexturedModel textureModel = new TexturedModel(model,texture);
 		
-		Entity entity = new Entity(textureModel, new Vector3f(0,0,-1),0,0,0,1);
+		Entity entity = new Entity(textureModel, new Vector3f(0,0,-2),0,0,0,1);
 		
 		Camera camera = new Camera();
 		
 		//main loop
 		while(!Display.isCloseRequested()){
-			entity.increaseRotation(1,1,0);
+			entity.increaseRotation(0,1,0);
 			camera.move();
 			renderer.prepare();
 			shader.start();
@@ -137,6 +121,9 @@ public class MainGameLoop {
 			renderer.render(entity, shader);
 			shader.stop();
 			DisplayManager.updateDisplay();
+			if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
+				break;
+			}
 		}
 		
 		shader.cleanUp();
