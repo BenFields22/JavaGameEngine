@@ -11,6 +11,7 @@ import models.RawModel;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
 import renderEngine.Renderer;
 import shaders.StaticShader;
@@ -23,17 +24,17 @@ public class MainGameLoop {
 		DisplayManager.createDisplay();
 		
 		Loader loader = new Loader();
-		StaticShader shader = new StaticShader();
-		Renderer renderer = new Renderer(shader);
-		
-		
 		
 		RawModel model = OBJLoader.loadObjModel("dragon", loader);
-		ModelTexture texture = new ModelTexture(loader.loadTexture("wood"));
-		TexturedModel textureModel = new TexturedModel(model,texture);
-		ModelTexture texture1 = textureModel.getTexture();
-		texture1.setShineDamper(20);
-		texture1.setReflectivity(.6f);
+		
+		
+		TexturedModel textureModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("wood")));
+		
+		
+		
+		ModelTexture texture = textureModel.getTexture();
+		texture.setShineDamper(20);
+		texture.setReflectivity(1f);
 		
 		
 		
@@ -42,23 +43,21 @@ public class MainGameLoop {
 		
 		Camera camera = new Camera();
 		
+		MasterRenderer renderer = new MasterRenderer();
+		
 		//main loop
 		while(!Display.isCloseRequested()){
 			entity.increaseRotation(0,0.5f,0);
 			camera.move();
-			renderer.prepare();
-			shader.start();
-			shader.loadLight(light);
-			shader.loadViewMatrix(camera);
-			renderer.render(entity, shader);
-			shader.stop();
+			renderer.processEntity(entity);
+			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
 			if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
 				break;
 			}
 		}
 		
-		shader.cleanUp();
+		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 
