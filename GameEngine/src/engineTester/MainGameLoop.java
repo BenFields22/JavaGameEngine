@@ -13,8 +13,9 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
-import renderEngine.Renderer;
+import renderEngine.EntityRenderer;
 import shaders.StaticShader;
+import terrains.Terrain;
 import textures.ModelTexture;
 import toolbox.KeyboardInput; 
 
@@ -25,7 +26,7 @@ public class MainGameLoop {
 		
 		Loader loader = new Loader();
 		
-		RawModel model = OBJLoader.loadObjModel("dragon", loader);
+		RawModel model = OBJLoader.loadObjModel("stall", loader);
 		
 		
 		TexturedModel textureModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("wood")));
@@ -38,8 +39,11 @@ public class MainGameLoop {
 		
 		
 		
-		Entity entity = new Entity(textureModel, new Vector3f(0,-5,-25),0,0,0,1);
-		Light light = new Light(new Vector3f(0,0,-20),new Vector3f(1,1,1));
+		Entity entity = new Entity(textureModel, new Vector3f(100,0,100),0,0,0,1);
+		Light light = new Light(new Vector3f(0,200,0),new Vector3f(1,1,1));
+		
+		Terrain terrain = new Terrain(0,0,loader,new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain2 = new Terrain(1,0,loader,new ModelTexture(loader.loadTexture("grass")));
 		
 		Camera camera = new Camera();
 		
@@ -49,6 +53,9 @@ public class MainGameLoop {
 		while(!Display.isCloseRequested()){
 			entity.increaseRotation(0,0.5f,0);
 			camera.move();
+			
+			renderer.processTerrain(terrain);
+			renderer.processTerrain(terrain2);
 			renderer.processEntity(entity);
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
