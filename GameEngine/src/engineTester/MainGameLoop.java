@@ -38,17 +38,13 @@ public class MainGameLoop {
 		texture.setReflectivity(10f);
 		
 		
-		
-<<<<<<< HEAD
-		Entity entity = new Entity(textureModel, new Vector3f(0,-5,-25),0,0,0,1);
-		Light light = new Light(new Vector3f(0,0,-20),new Vector3f(.3f,0f,1f));
-=======
+
 		Entity entity = new Entity(textureModel, new Vector3f(100,0,100),0,0,0,1);
 		Light light = new Light(new Vector3f(0,200,0),new Vector3f(1,1,1));
 		
 		Terrain terrain = new Terrain(0,0,loader,new ModelTexture(loader.loadTexture("grass")));
 		Terrain terrain2 = new Terrain(1,0,loader,new ModelTexture(loader.loadTexture("grass")));
->>>>>>> 6f78d3c7cf578ac844d5cfbb06d52eeb9a017f6f
+
 		
 		Camera camera = new Camera();
 		
